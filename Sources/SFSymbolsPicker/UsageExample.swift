@@ -9,7 +9,6 @@ import SwiftUI
 
 struct UsageExample: View {
     
-    @State private var name = ""
     @State private var icon = "l1.rectangle.roundedbottom"
     
     @State private var isPresented = false
@@ -17,7 +16,7 @@ struct UsageExample: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("Write here", text: $name)
+                Text("Developed by Alessio Rubicini")
                 
                 Button(action: {
                     withAnimation {
@@ -25,14 +24,13 @@ struct UsageExample: View {
                     }
                 }, label: {
                     HStack {
-                        Text("Choose an icon")
+                        Text("Press here")
                         Spacer()
-                        Image(systemName: icon)
+                        Image(systemName: icon).font(.title3)
                     }
                 })
                 
                 SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games)
-                
                 
             }
             .navigationTitle("SFSymbolsPicker")
