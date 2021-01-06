@@ -65,14 +65,12 @@ public enum Category: String, CaseIterable, Identifiable {
     case none = ""
 }
 
+
+#if DEBUG
 struct SFSymbolsPicker_Previews: PreviewProvider {
     
     static var previews: some View {
-        
-        VStack {
-            
-            
-            SFSymbolsPicker(isPresented: .constant(false), icon: .constant(""), category: .commerce)
-        }
+        SFSymbolsPicker(isPresented: .constant(false), icon: .constant(""), category: .commerce)
     }
 }
+#endif
