@@ -2,9 +2,10 @@
 
 SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SFSymbols inside your app with an easy binding!
 
+
 ## Example
 
-```
+```swift
 @State private var name = ""
 @State private var icon = "l1.rectangle.roundedbottom"
 
@@ -31,3 +32,11 @@ var body: some View {
 }
 ```
 
+## Installation
+
+Required:
+- iOS 14.0 or above
+- Xcode 12.0 or above
+
+In Xcode go to `File -> Swift Packages -> Add Package Dependency` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
+Then choose the main branch (versions support coming soon).

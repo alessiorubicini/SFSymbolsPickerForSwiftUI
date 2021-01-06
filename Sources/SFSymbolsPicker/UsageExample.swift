@@ -15,22 +15,27 @@ struct UsageExample: View {
     @State private var isPresented = false
     
     var body: some View {
-        Form {
-            TextField("Write here", text: $name)
-            
-            Button(action: {
-                withAnimation {
-                    isPresented.toggle()
-                }
-            }, label: {
-                HStack {
-                    Text("Choose an icon")
-                    Spacer()
-                    Image(systemName: icon)
-                }
-            })
-            
-            SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games)
+        NavigationView {
+            Form {
+                TextField("Write here", text: $name)
+                
+                Button(action: {
+                    withAnimation {
+                        isPresented.toggle()
+                    }
+                }, label: {
+                    HStack {
+                        Text("Choose an icon")
+                        Spacer()
+                        Image(systemName: icon)
+                    }
+                })
+                
+                SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games)
+                
+                
+            }
+            .navigationTitle("SFSymbolsPicker")
         }
     }
 }
