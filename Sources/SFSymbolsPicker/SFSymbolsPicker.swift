@@ -15,21 +15,23 @@ public struct SFSymbolsPicker: View {
     let category: Category
     
     public var body: some View {
-        ScrollView(.vertical) {
-            
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
+        if isPresented {
+            ScrollView(.vertical) {
                 
-                ForEach(symbols[category.rawValue]!, id: \.hash) { icon in
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
                     
-                    Image(systemName: icon)
-                        .font(.system(size: 25))
-                        .animation(.linear)
+                    ForEach(symbols[category.rawValue]!, id: \.hash) { icon in
                         
-                        .onTapGesture {
-                            self.icon = icon
-                        }
-                    
-                }.padding(.top, 5)
+                        Image(systemName: icon)
+                            .font(.system(size: 25))
+                            .animation(.linear)
+                            
+                            .onTapGesture {
+                                self.icon = icon
+                            }
+                        
+                    }.padding(.top, 5)
+                }
             }
         }
             
