@@ -10,9 +10,15 @@ import SwiftUI
 
 public struct SFSymbolsPicker: View {
     
-    @Binding var isPresented: Bool
-    @Binding var icon: String
+    @Binding public var isPresented: Bool
+    @Binding public var icon: String
     let category: Category
+    
+    public init(isPresented: Binding<Bool>, icon: Binding<String>, category: Category) {
+        self._isPresented = isPresented
+        self._icon = icon
+        self.category = category
+    }
     
     public var body: some View {
         if isPresented {
