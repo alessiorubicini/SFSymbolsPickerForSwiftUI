@@ -25,7 +25,7 @@ var body: some View {
             }
         })
         
-        SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games)
+        SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games, axis: .vertical, haptic: true)
     }
 }
 ```
