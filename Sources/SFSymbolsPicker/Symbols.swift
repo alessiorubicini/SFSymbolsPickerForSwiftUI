@@ -7,6 +7,33 @@
 
 import Foundation
 
+public enum Category: String, CaseIterable, Identifiable {
+    public var id: String { rawValue }
+    
+    case communication = "Communication"
+    case weather = "Weather"
+    case objects = "Objects"
+    case devices = "Devices"
+    case games = "Games"
+    case connectivity = "Connectivity"
+    case transport = "Transport"
+    case people = "People"
+    case nature = "Nature"
+    case edit = "Edit"
+    case text = "Text"
+    case multimedia = "Multimedia"
+    case keyboard = "Keyboard"
+    case commerce = "Commerce"
+    case time = "Time"
+    case health = "Health"
+    case forms = "Forms"
+    case arrows = "Arrows"
+    case indices = "Indices"
+    case math = "Math"
+    
+    case none = ""
+}
+
 let symbols : [String: [String]] = [
     "Communication": ["mic","mic.fill","mic.circle","mic.circle.fill","mic.slash","mic.slash.fill","bubble.right","bubble.right.fill","bubble.left","bubble.left.fill","exclamationmark.bubble","exclamationmark.bubble.fill","quote.bubble","quote.bubble.fill","t.bubble","t.bubble.fill","text.bubble","text.bubble.fill","captions.bubble","captions.bubble.fill","plus.bubble","plus.bubble.fill","rectangle.3.offgrid.bubble.left","rectangle.3.offgrid.bubble.left.fill","ellipsis.bubble","ellipsis.bubble.fill","phone.bubble.left","phone.bubble.left.fill","bubble.middle.bottom","bubble.middle.bottom.fill","bubble.middle.top","bubble.middle.top.fill","bubble.left.and.bubble.right","bubble.left.and.bubble.right.fill","phone","phone.fill","phone.circle","phone.circle.fill","phone.badge.plus","phone.fill.badge.plus","phone.connection","phone.fill.connection","phone.arrow.up.right","phone.fill.arrow.up.right","phone.arrow.down.left","phone.fill.arrow.down.left","phone.arrow.right","phone.fill.arrow.right","phone.down","phone.down.fill","phone.down.circle","phone.down.circle.fill","envelope","envelope.fill","envelope.circle","envelope.circle.fill","envelope.arrow.triangle.branch","envelope.arrow.triangle.branch.fill","envelope.open","envelope.open.fill","envelope.badge","envelope.badge.fill","waveform","waveform.circle","waveform.circle.fill"],
     "Weather": ["sun.min","sun.min.fill","sun.max","sun.max.fill","sunrise","sunrise.fill","sunset","sunset.fill","sun.dust","sun.dust.fill","sun.haze","sun.haze.fill","moon","moon.fill","moon.circle","moon.circle.fill","sparkles","moon.stars","moon.stars.fill","cloud","cloud.fill","cloud.drizzle","cloud.drizzle.fill","cloud.rain","cloud.rain.fill","cloud.heavyrain","cloud.heavyrain.fill","cloud.fog","cloud.fog.fill","cloud.hail","cloud.hail.fill","cloud.snow","cloud.snow.fill","cloud.sleet","cloud.sleet.fill","cloud.bolt","cloud.bolt.fill","cloud.bolt.rain","cloud.bolt.rain.fill","cloud.sun","cloud.sun.fill","cloud.sun.rain","cloud.sun.rain.fill","cloud.sun.bolt","cloud.sun.bolt.fill","cloud.moon","cloud.moon.fill","cloud.moon.rain","cloud.moon.rain.fill","cloud.moon.bolt","cloud.moon.bolt.fill","smoke","smoke.fill","wind","wind.snow","snow","tornado","tropicalstorm","hurricane","thermometer.sun","thermometer.sun.fill","thermometer.snowflake","thermometer","aqi.low","aqi.medium","aqi.high"],

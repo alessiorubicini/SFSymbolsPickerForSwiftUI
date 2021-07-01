@@ -30,10 +30,11 @@ struct UsageExample: View {
                     }
                 })
                 
-                SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games)
-                
+                SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games, axis: .vertical, haptic: true)
+                    
             }
             .navigationTitle("SFSymbolsPicker")
+            
         }
     }
 }
