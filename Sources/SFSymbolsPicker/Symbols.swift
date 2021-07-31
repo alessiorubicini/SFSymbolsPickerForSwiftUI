@@ -45,7 +45,7 @@ let symbols : [String: [String]] = [
     "Connectivity": [
         "externaldrive.connected.to.line.below","externaldrive.connected.to.line.below.fill","personalhotspot","network","bolt.horizontal","bolt.horizontal.fill","bolt.horizontal.circle","bolt.horizontal.circle.fill","wifi","wifi.slash","wifi.exclamationmark","dot.radiowaves.left.and.right","dot.radiowaves.right","dot.radiowaves.forward","wave.3.left","wave.3.left.circle","wave.3.left.circle.fill","wave.3.backward","wave.3.backward.circle","wave.3.backward.circle.fill","wave.3.right","wave.3.right.circle","wave.3.right.circle.fill","wave.3.forward","wave.3.forward.circle","wave.3.forward.circle.fill","antenna.radiowaves.left.and.right",
     ],
-    "Transports": [
+    "Transport": [
         "externaldrive.connected.to.line.below","externaldrive.connected.to.line.below.fill","personalhotspot","network","bolt.horizontal","bolt.horizontal.fill","bolt.horizontal.circle","bolt.horizontal.circle.fill","wifi","wifi.slash","wifi.exclamationmark","dot.radiowaves.left.and.right","dot.radiowaves.right","dot.radiowaves.forward","wave.3.left","wave.3.left.circle","wave.3.left.circle.fill","wave.3.backward","wave.3.backward.circle","wave.3.backward.circle.fill","wave.3.right","wave.3.right.circle","wave.3.right.circle.fill","wave.3.forward","wave.3.forward.circle","wave.3.forward.circle.fill","antenna.radiowaves.left.and.right"
     ],
     "People": [
@@ -63,7 +63,7 @@ let symbols : [String: [String]] = [
     "Multimedia":[
         "play","play.fill","play.circle","play.circle.fill","play.rectangle","play.rectangle.fill","play.slash","play.slash.fill","pause","pause.fill","pause.circle","pause.circle.fill","pause.rectangle","pause.rectangle.fill","stop","stop.fill","stop.circle","stop.circle.fill","record.circle","record.circle.fill","playpause","playpause.fill","backward","backward.fill","forward","forward.fill","backward.end","backward.end.fill","forward.end","forward.end.fill","backward.end.alt","backward.end.alt.fill","forward.end.alt","forward.end.alt.fill","backward.frame","backward.frame.fill","forward.frame","forward.frame.fill","shuffle","shuffle.circle","shuffle.circle.fill","repeat","repeat.circle","repeat.circle.fill","repeat.1","repeat.1.circle","repeat.1.circle.fill","infinity","infinity.circle","infinity.circle.fill","arrow.rectanglepath","goforward","gobackward","goforward.10","gobackward.10","goforward.15","gobackward.15","goforward.30","gobackward.30","goforward.45","gobackward.45","goforward.60","gobackward.60","goforward.75","gobackward.75","goforward.90","gobackward.90","goforward.plus","gobackward.minus"
     ],
-    "KeyBoard":[
+    "Keyboard":[
         "command","command.circle","command.circle.fill","command.square","command.square.fill","option","alt","delete.right","delete.right.fill","clear","clear.fill","delete.left","delete.left.fill","shift","shift.fill","capslock","capslock.fill","escape","power","globe","sun.min","sun.min.fill","sun.max","sun.max.fill","light.min","light.max","keyboard","keyboard.chevron.compact.down","keyboard.chevron.compact.left","keyboard.onehanded.left","keyboard.onehanded.right","eject","eject.fill","eject.circle","eject.circle.fill","mount","mount.fill","control","projective","arrow.left.to.line.alt","arrow.left.to.line","arrow.right.to.line.alt","arrow.right.to.line","arrow.up.to.line.alt","arrow.up.to.line","arrow.down.to.line.alt","arrow.down.to.line"
     ],
     "Commerce": [
