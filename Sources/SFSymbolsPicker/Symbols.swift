@@ -22,7 +22,7 @@ public enum Category: String, CaseIterable, Identifiable {
     case edit = "Edit"
     case text = "Text"
     case multimedia = "Multimedia"
-    case keyboard = "Keyboard"
+    case keyboard = "KeyBoard"
     case commerce = "Commerce"
     case time = "Time"
     case health = "Health"
