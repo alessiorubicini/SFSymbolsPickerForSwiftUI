@@ -1,34 +1,43 @@
-# SFSymbolsPicker
+# SF Symbols Picker
 
-SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SFSymbols inside your iOS app with an easy binding!
+SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SF Symbols inside your iOS app with an easy binding!
 
-<img src="./Resources/example.png" width=300>
+![SF Symbols Picker](./Resources/SFSymbolsPicker.png)
+
+### 1.0.2 (October 2023)
+
+**New update**: the way the package loads SF symbols has radically changed. Now the symbols are read at run-time directly by the system, so the users can access the latest symbols added by Apple as soon as they update their devices.
+
+Special thanks to [mackoj](https://github.com/mackoj) for the suggestion in implementing this solution.
 
 ## Example
 
 ```swift
 @State private var icon = "l1.rectangle.roundedbottom"
-
 @State private var isPresented = false
 
 var body: some View {
-    Form {        
-        Button(action: {
-            withAnimation {
+    NavigationView {
+        VStack {
+            Button("Select a symbol") {
                 isPresented.toggle()
             }
-        }, label: {
-            HStack {
-                Text("Press Here")
-                Spacer()
-                Image(systemName: icon)
-            }
-        })
-        
-        SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games, axis: .vertical, haptic: true)
+
+            Image(systemName: icon).font(.title3)
+
+            .sheet(isPresented: $isPresented, content: {
+                SymbolsPicker(selection: $icon)
+            })
+
+            .padding()
+
+        }
+    .navigationTitle("SF Symbols Picker")
     }
 }
 ```
+
+![Demo](./Resources/example-gif.gif)
 
 ## Installation
 

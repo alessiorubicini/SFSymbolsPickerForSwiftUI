@@ -10,30 +10,24 @@ import SwiftUI
 struct UsageExample: View {
     
     @State private var icon = "l1.rectangle.roundedbottom"
-    
     @State private var isPresented = false
     
     var body: some View {
         NavigationView {
-            Form {
-                Text("Developed by Alessio Rubicini")
+            VStack {
+                Button("Select a symbol") {
+                    isPresented.toggle()
+                }
                 
-                Button(action: {
-                    withAnimation {
-                        isPresented.toggle()
-                    }
-                }, label: {
-                    HStack {
-                        Text("Press here")
-                        Spacer()
-                        Image(systemName: icon).font(.title3)
-                    }
-                })
+                Image(systemName: icon).font(.title3)
                 
-                SFSymbolsPicker(isPresented: $isPresented, icon: $icon, category: .games, axis: .vertical, haptic: true)
+                    .sheet(isPresented: $isPresented, content: {
+                        SymbolsPicker(selection: $icon)
+                    }).padding()
+                
                     
             }
-            .navigationTitle("SFSymbolsPicker")
+            .navigationTitle("SF Symbols Picker")
             
         }
     }
