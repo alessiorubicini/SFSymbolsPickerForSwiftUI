@@ -12,6 +12,8 @@ Special thanks to [mackoj](https://github.com/mackoj) for the suggestion in impl
 
 ## Example
 
+Here's a short usage example. You can find the full code in [UsageExample.swift](https://github.com/alessiorubicini/SFSymbolsPickerForSwiftUI/blob/master/Sources/SFSymbolsPicker/UsageExample.swift).
+
 ```swift
 @State private var icon = "l1.rectangle.roundedbottom"
 @State private var isPresented = false
@@ -47,3 +49,11 @@ Required:
 
 In Xcode go to `File -> Swift Packages -> Add Package Dependency` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
 Then choose the main branch (versions support coming soon).
+
+## License
+
+Copyright 2023 (©) Alessio Rubicini.
+
+The license for this repository is MIT License.
+
+Please see the [LICENSE](LICENSE) file for full reference
