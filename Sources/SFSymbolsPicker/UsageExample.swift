@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UsageExample: View {
     
-    @State private var icon = "l1.rectangle.roundedbottom"
+    @State private var icon = "star.fill"
     @State private var isPresented = false
     
     var body: some View {
@@ -22,13 +22,12 @@ struct UsageExample: View {
                 Image(systemName: icon).font(.title3)
                 
                     .sheet(isPresented: $isPresented, content: {
-                        SymbolsPicker(selection: $icon)
+                        SymbolsPicker(selection: $icon, title: "Choose your symbol", autoDismiss: true)
                     }).padding()
                 
                     
             }
             .navigationTitle("SF Symbols Picker")
-            
         }
     }
 }

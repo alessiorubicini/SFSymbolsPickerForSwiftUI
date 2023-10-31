@@ -10,12 +10,13 @@ import SwiftUI
 struct SearchBar: View {
     
     @Binding var searchText: String
+    let label: String
     @State private var isEditing = false
     
     var body: some View {
         HStack {            
             
-            TextField("Search...", text: $searchText)
+            TextField(label, text: $searchText)
                 .padding(7)
                 .padding(.horizontal, 25)
                 .background(Color(.systemGray6))
@@ -41,5 +42,5 @@ struct SearchBar: View {
 }
 
 #Preview {
-    SearchBar(searchText: .constant(""))
+    SearchBar(searchText: .constant(""), label: "Search...")
 }

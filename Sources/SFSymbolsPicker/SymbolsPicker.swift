@@ -10,21 +10,36 @@ import SwiftUI
 struct SymbolsPicker: View {
     
     // MARK: - View properties
-        
-    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var selection: String
+    let title: String
+    let searchbarLabel: String
+    let autoDismiss: Bool
+    
+    @Environment(\.presentationMode) var presentationMode
     @State private var searchText = ""
     @State private var isFirstTimeAppeared = false
     @State private var symbols: [String] = []
     
-    
+    /// Initialize the SymbolsPicker view
+    /// - Parameters:
+    ///   - selection: binding to the selected icon name.
+    ///   - title: navigation title for the view.
+    ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
+    ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    public init(selection: Binding<String>, title: String, searchLabel: String = "Search...", autoDismiss: Bool = false) {
+        self._selection = selection
+        self.title = title
+        self.searchbarLabel = searchLabel
+        self.autoDismiss = autoDismiss
+    }
     
     // MARK: - View body
     
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(searchText: $searchText)
+                SearchBar(searchText: $searchText, label: searchbarLabel)
                 
                 ScrollView(.vertical) {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
@@ -41,33 +56,39 @@ struct SymbolsPicker: View {
                         }.padding(.top, 5)
                     }
                 }
-                .navigationTitle("Pick a symbol")
+                .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Image(systemName: "xmark.circle")
+                        }
+
+                    }
+                }
                 .padding(.vertical, 5)
                 
             }.padding(.horizontal, 5)
         }
-        .onAppear {
-            if(!isFirstTimeAppeared) {
-                self.loadSymbolsFromSystem()
+        
+        .onChange(of: selection) { newValue in
+            if(autoDismiss) {
+                presentationMode.wrappedValue.dismiss()
             }
         }
-    }
-    
-    private func loadSymbolsFromSystem() {
-        var symbols = [String]()
-        if let bundle = Bundle(identifier: "com.apple.CoreGlyphs"),
-           let resourcePath = bundle.path(forResource: "name_availability", ofType: "plist"),
-           let plist = NSDictionary(contentsOfFile: resourcePath),
-           let plistSymbols = plist["symbols"] as? [String: String]
-        {
-            symbols = Array(plistSymbols.keys)
+        
+        .onAppear {
+            if(!isFirstTimeAppeared) {
+                self.symbols = SymbolLoader.loadSymbolsFromSystem()
+            }
         }
-        self.symbols = symbols
+        
     }
 
 }
 
 #Preview {
-    SymbolsPicker(selection: .constant("beats.powerbeatspro"))
+    SymbolsPicker(selection: .constant("beats.powerbeatspro"), title: "Pick a symbol", autoDismiss: true)
 }
