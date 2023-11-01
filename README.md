@@ -52,8 +52,8 @@ Required:
 - iOS 14.0 or above
 - Xcode 12.0 or above
 
-In Xcode go to `File -> Swift Packages -> Add Package Dependency` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
-Then choose the main branch (versions support coming soon).
+In Xcode go to `File -> Add Package Dependencies...` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
+Then choose the main branch or the version you desire.
 
 ## License
 
