@@ -43,9 +43,6 @@ var body: some View {
 }
 ```
 
-Version 1.0.2 demo:
-![Demo](./Resources/example-gif.gif)
-
 ## Installation
 
 Required:
