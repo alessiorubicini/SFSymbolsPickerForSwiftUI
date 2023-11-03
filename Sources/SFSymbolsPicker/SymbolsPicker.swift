@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SymbolsPicker: View {
+public struct SymbolsPicker: View {
     
     // MARK: - View properties
     
@@ -36,7 +36,7 @@ struct SymbolsPicker: View {
     
     // MARK: - View body
     
-    var body: some View {
+    public var body: some View {
         NavigationView {
             VStack {
                 SearchBar(searchText: $searchText, label: searchbarLabel)
