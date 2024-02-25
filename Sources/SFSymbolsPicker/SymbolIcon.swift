@@ -9,19 +9,18 @@ import SwiftUI
 
 struct SymbolIcon: View {
     
-    let icon: String
+    let symbolName: String
     @Binding var selection: String
     
     var body: some View {
-        Image(systemName: icon)
+        Image(systemName: symbolName)
             .font(.system(size: 25))
             .animation(.linear)
-            .foregroundColor(self.selection == icon ? Color.accentColor : Color.primary)
+            .foregroundColor(self.selection == symbolName ? Color.accentColor : Color.primary)
             .onTapGesture {
-                
                 // Assign binding value
                 withAnimation {
-                    self.selection = icon
+                    self.selection = symbolName
                 }
             }
     }
@@ -29,5 +28,5 @@ struct SymbolIcon: View {
 }
 
 #Preview {
-    SymbolIcon(icon: "beats.powerbeatspro", selection: .constant("star.bubble"))
+    SymbolIcon(symbolName: "beats.powerbeatspro", selection: .constant("star.bubble"))
 }

@@ -5,6 +5,10 @@ SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple'
 ![SF Symbols Picker](./Resources/SFSymbolsPicker.png)
 
 ## Changelog
+### 1.0.4
+- Optimized symbol loading performances
+- Improved search bar
+
 ### 1.0.3
 - Added the ability to automatically dismiss the view when a symbol is selected
 - Added the ability to specify the view title and a label for the search bar
@@ -12,9 +16,7 @@ SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple'
 
 ### 1.0.2
 
-**New update**: the way the package loads SF symbols has radically changed. Now the symbols are read at run-time directly by the system, so the users can access the latest symbols added by Apple as soon as they update their devices.
-
-Special thanks to [mackoj](https://github.com/mackoj) for the suggestion in implementing this solution.
+The way the package loads SF symbols has radically changed. Now the symbols are read at run-time directly by the system, so the users can access the latest symbols added by Apple as soon as they update their devices. Special thanks to [mackoj](https://github.com/mackoj) for the suggestion in implementing this solution.
 
 ## Usage
 
@@ -54,7 +56,7 @@ Then choose the main branch or the version you desire.
 
 ## License
 
-Copyright 2023 (©) Alessio Rubicini.
+Copyright 2024 (©) Alessio Rubicini.
 
 The license for this repository is MIT License.
 

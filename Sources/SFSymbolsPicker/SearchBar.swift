@@ -16,12 +16,26 @@ struct SearchBar: View {
     var body: some View {
         HStack {            
             
-            TextField(label, text: $searchText)
-                .padding(7)
-                .padding(.horizontal, 25)
+            HStack {
+                Image(systemName: "magnifyingglass")
+                
+                TextField(label, text: $searchText)
+                
+                if(!searchText.isEmpty) {
+                    Button(action: {
+                        searchText = ""
+                    }, label: {
+                        Image(systemName: "xmark.circle.fill")
+                    })
+                }
+            }
+                .padding(.vertical, 8)
+                .padding(.leading, 10)
+                .padding(.trailing, 15)
+                .foregroundColor(.secondary)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 5)
                 .onTapGesture {
                     self.isEditing = true
                 }

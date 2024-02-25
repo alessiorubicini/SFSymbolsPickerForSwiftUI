@@ -9,17 +9,10 @@ import SwiftUI
 
 public struct SymbolsPicker: View {
     
-    // MARK: - View properties
-    
     @Binding var selection: String
-    let title: String
-    let searchbarLabel: String
-    let autoDismiss: Bool
-    
+    @ObservedObject var vm: SymbolsPickerViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var searchText = ""
-    @State private var isFirstTimeAppeared = false
-    @State private var symbols: [String] = []
     
     /// Initialize the SymbolsPicker view
     /// - Parameters:
@@ -29,37 +22,41 @@ public struct SymbolsPicker: View {
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
     public init(selection: Binding<String>, title: String, searchLabel: String = "Search...", autoDismiss: Bool = false) {
         self._selection = selection
-        self.title = title
-        self.searchbarLabel = searchLabel
-        self.autoDismiss = autoDismiss
+        self.vm = SymbolsPickerViewModel(title: title, searchbarLabel: searchLabel, autoDismiss: autoDismiss)
     }
     
-    // MARK: - View body
-    
+    @ViewBuilder
     public var body: some View {
         NavigationView {
             VStack {
-                SearchBar(searchText: $searchText, label: searchbarLabel)
+                SearchBar(searchText: $searchText, label: vm.searchbarLabel)
                 
                 ScrollView(.vertical) {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
-                        ForEach(symbols.filter{searchText.isEmpty ? true : $0.contains(searchText.lowercased()) }, id: \.hash) { icon in
-                            
+                        ForEach(vm.symbols, id: \.hash) { icon in
                             Button {
                                 withAnimation {
                                     self.selection = icon
                                 }
                             } label: {
-                                SymbolIcon(icon: icon, selection: $selection)
+                                SymbolIcon(symbolName: icon, selection: $selection)
                             }
 
                         }.padding(.top, 5)
                     }
+                    
+                    if(vm.hasMoreSymbols && searchText.isEmpty) {
+                        Button(action: {
+                            vm.loadSymbols()
+                        }, label: {
+                            Label("Load More", systemImage: "square.and.arrow.down")
+                        }).padding()
+                    }
                 }
-                .navigationTitle(title)
+                .navigationTitle(vm.title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
@@ -74,17 +71,18 @@ public struct SymbolsPicker: View {
         }
         
         .onChange(of: selection) { newValue in
-            if(autoDismiss) {
+            if(vm.autoDismiss) {
                 presentationMode.wrappedValue.dismiss()
             }
         }
         
-        .onAppear {
-            if(!isFirstTimeAppeared) {
-                self.symbols = SymbolLoader.loadSymbolsFromSystem()
+        .onChange(of: searchText) { newValue in
+            if(newValue.isEmpty || searchText.isEmpty) {
+                vm.reset()
+            } else {
+                vm.searchSymbols(with: newValue)
             }
         }
-        
     }
 
 }
