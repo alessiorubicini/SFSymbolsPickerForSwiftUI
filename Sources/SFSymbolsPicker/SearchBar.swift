@@ -33,7 +33,11 @@ struct SearchBar: View {
                 .padding(.leading, 10)
                 .padding(.trailing, 15)
                 .foregroundColor(.secondary)
+#if os(iOS)
                 .background(Color(.systemGray6))
+#else
+                .background(Color(.systemGray))
+#endif
                 .cornerRadius(8)
                 .padding(.horizontal, 5)
                 .onTapGesture {

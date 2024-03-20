@@ -54,7 +54,9 @@ public struct SymbolsPicker: View {
                     }
                 }
                 .navigationTitle(vm.title)
+#if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
+#endif
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button {

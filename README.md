@@ -1,6 +1,6 @@
 # SF Symbols Picker
 
-SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SF Symbols inside your iOS app with an easy binding!
+SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SF Symbols inside your iOS and macOS apps with an easy binding!
 
 ![SF Symbols Picker](./Resources/SFSymbolsPicker.png)
 
@@ -52,6 +52,7 @@ var body: some View {
 
 Required:
 - iOS 14.0 or above
+- macOS 11.0 or above
 - Xcode 12.0 or above
 
 In Xcode go to `File -> Add Package Dependencies...` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
