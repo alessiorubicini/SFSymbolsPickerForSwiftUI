@@ -7,12 +7,13 @@
 
 import SwiftUI
 
-public struct SymbolsPicker: View {
+public struct SymbolsPicker<Content: View>: View {
     
     @Binding var selection: String
     @ObservedObject var vm: SymbolsPickerViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var searchText = ""
+    let closeButtonView: Content
     
     /// Initialize the SymbolsPicker view
     /// - Parameters:
@@ -20,9 +21,12 @@ public struct SymbolsPicker: View {
     ///   - title: navigation title for the view.
     ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
-    public init(selection: Binding<String>, title: String, searchLabel: String = "Search...", autoDismiss: Bool = false) {
+    ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
+    
+    public init(selection: Binding<String>, title: String, searchLabel: String = "Search...", autoDismiss: Bool = false, @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(title: title, searchbarLabel: searchLabel, autoDismiss: autoDismiss)
+        self.closeButtonView = closeButton()
     }
     
     @ViewBuilder
@@ -54,17 +58,16 @@ public struct SymbolsPicker: View {
                     }
                 }
                 .navigationTitle(vm.title)
-#if os(iOS)
+                #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
-#endif
+                #endif
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
-                            Image(systemName: "xmark.circle")
+                            closeButtonView
                         }
-
                     }
                 }
                 .padding(.vertical, 5)

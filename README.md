@@ -5,6 +5,10 @@ SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple'
 ![SF Symbols Picker](./Resources/SFSymbolsPicker.png)
 
 ## Changelog
+### 1.0.6
+- Added the ability to specify a custom close button
+- Added support for macOS 11.0 and above
+
 ### 1.0.5
 - Optimized symbol loading performances
 - Improved search bar
@@ -47,6 +51,22 @@ var body: some View {
     }
 }
 ```
+
+With custom button:
+
+```swift
+...
+
+    .sheet(isPresented: $isPresented, content: {
+        SymbolsPicker(selection: $icon, title: "Pick a symbol", autoDismiss: true) {
+            // Your custom view...
+            // For example:
+            Text("Close!")
+        }
+    }).padding()
+...
+```
+
 
 ## Installation
 
