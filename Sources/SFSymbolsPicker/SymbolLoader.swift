@@ -56,7 +56,9 @@ public class SymbolLoader {
             // Get all symbol names
             allSymbols = Array(plistSymbols.keys)
         }
-        return allSymbols
+        return allSymbols.sorted(by: {
+            $1 > $0
+        })
     }
 
 }
