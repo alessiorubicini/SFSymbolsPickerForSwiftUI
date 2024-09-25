@@ -33,8 +33,6 @@ public struct SymbolsPicker<Content: View>: View {
     public var body: some View {
         NavigationView {
             VStack {
-                SearchBar(searchText: $searchText, label: vm.searchbarLabel)
-                
                 ScrollView(.vertical) {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
                         ForEach(vm.symbols, id: \.hash) { icon in
@@ -73,6 +71,7 @@ public struct SymbolsPicker<Content: View>: View {
                 .padding(.vertical, 5)
                 
             }.padding(.horizontal, 5)
+                .searchable(text: $searchText, prompt: vm.searchbarLabel)
         }
         
         .onChange(of: selection) { newValue in
