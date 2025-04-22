@@ -1,29 +1,39 @@
-# SF Symbols Picker
+<div align="center">
+  <img width="300" height="300" src="/Resources/icon.png" alt="Package Logo">
+  <h1><b>SF Symbols Picker for SwiftUI</b></h1>
+  <p>
+    SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SF Symbols inside your iOS and macOS apps with an easy binding!
+    <br>
+  </p>
+</div>
 
-SFSymbolsPicker is a simple and powerful SwiftUI picker that let you pick Apple's SF Symbols inside your iOS and macOS apps with an easy binding!
+<div align="center">
+  <a href="https://swift.org">
+<!--     <img src="https://img.shields.io/badge/Swift-5.9%20%7C%206-orange.svg" alt="Swift Version"> -->
+    <img src="https://img.shields.io/badge/Swift-5.7-orange.svg" alt="Swift Version">
+  </a>
+  <a href="https://www.apple.com/ios/">
+    <img src="https://img.shields.io/badge/iOS-15%2B-blue.svg" alt="iOS">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
+  </a>
+</div>
 
-![SF Symbols Picker](./Resources/SFSymbolsPicker.png)
+## Features
 
-## Changelog
-### 1.0.6
-- Added the ability to specify a custom close button
-- Added support for macOS 11.0 and above
+- **Custom Close Button**: Specify a custom close button for the picker.
+- **macOS Support**: Compatible with macOS 11.0 and above.
+- **Optimized Performance**: Improved symbol loading performance for a smoother experience.
+- **Enhanced Search Bar**: Upgraded search bar for better usability.
+- **Bug Fixes**: Resolved visibility issues for the SymbolPicker view.
+- **Auto Dismiss**: Automatically dismiss the picker when a symbol is selected.
+- **Customizable UI**: Set a custom title for the view and a label for the search bar.
+- **Toolbar Icon**: Added a toolbar icon to manually dismiss the picker.
+- **Dynamic Symbol Loading**: Symbols are loaded at runtime directly from the system, ensuring access to the latest symbols as soon as devices are updated. Special thanks to [mackoj](https://github.com/mackoj) for contributing to the dynamic symbol loading implementation.
 
-### 1.0.5
-- Optimized symbol loading performances
-- Improved search bar
-
-### 1.0.4
-- Fixed visibility bug for SymbolPicker view
-
-### 1.0.3
-- Added the ability to automatically dismiss the view when a symbol is selected
-- Added the ability to specify the view title and a label for the search bar
-- Added a toolbar icon to manually dismiss the view
-
-### 1.0.2
-
-The way the package loads SF symbols has radically changed. Now the symbols are read at run-time directly by the system, so the users can access the latest symbols added by Apple as soon as they update their devices. Special thanks to [mackoj](https://github.com/mackoj) for the suggestion in implementing this solution.
+## Preview
+![SF Symbols Picker](./Resources/SFSymbolsPickerPreview.png)
 
 ## Usage
 
