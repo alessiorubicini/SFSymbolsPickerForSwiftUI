@@ -31,28 +31,59 @@ public struct SymbolsPicker<Content: View>: View {
     
     @ViewBuilder
     public var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                ScrollView(.vertical) {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
-                        ForEach(vm.symbols, id: \.hash) { icon in
-                            Button {
-                                withAnimation {
-                                    self.selection = icon
+                Group {
+                    if(vm.isLoading) {
+                        ProgressView()
+                            .scaleEffect(1.2)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else if vm.symbols.isEmpty && !searchText.isEmpty {
+                        ContentUnavailableView {
+                            Label("No Symbols Found", systemImage: "magnifyingglass")
+                        } description: {
+                            Text("Try searching for something else")
+                        }
+                    } else {
+                        ScrollView(.vertical) {
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.adaptive(minimum: 60, maximum: 80), spacing: 16)
+                                ],
+                                spacing: 16
+                            ) {
+                                ForEach(vm.symbols, id: \.hash) { icon in
+                                    Button {
+                                        withAnimation {
+                                            self.selection = icon
+                                        }
+                                    } label: {
+                                        SymbolIcon(symbolName: icon, selection: $selection)
+                                    }
                                 }
-                            } label: {
-                                SymbolIcon(symbolName: icon, selection: $selection)
+                                
+                                if vm.hasMoreSymbols && searchText.isEmpty {
+                                    if vm.isLoadingMore {
+                                        ProgressView()
+                                            .padding()
+                                    } else {
+                                        Color.clear
+                                            .frame(height: 1)
+                                            .onAppear {
+                                                vm.loadMoreSymbols()
+                                            }
+                                    }
+                                }
                             }
-
-                        }.padding(.top, 5)
-                    }
-                    
-                    if(vm.hasMoreSymbols && searchText.isEmpty) {
-                        Button(action: {
-                            vm.loadSymbols()
-                        }, label: {
-                            Label("Load More", systemImage: "square.and.arrow.down")
-                        }).padding()
+                            .padding(.horizontal)
+                        }
+                        .scrollIndicators(.hidden)
+                        .scrollDisabled(false)
+                        .simultaneousGesture(
+                            DragGesture(minimumDistance: 10)
+                                .onChanged { _ in }
+                        )
+                        .scrollDismissesKeyboard(.immediately)
                     }
                 }
                 .navigationTitle(vm.title)
@@ -68,19 +99,17 @@ public struct SymbolsPicker<Content: View>: View {
                         }
                     }
                 }
-                .padding(.vertical, 5)
-                
-            }.padding(.horizontal, 5)
-                .searchable(text: $searchText, prompt: vm.searchbarLabel)
+            }
+            .searchable(text: $searchText, prompt: vm.searchbarLabel)
         }
         
-        .onChange(of: selection) { newValue in
+        .onChange(of: selection) { oldValue, newValue in
             if(vm.autoDismiss) {
                 presentationMode.wrappedValue.dismiss()
             }
         }
         
-        .onChange(of: searchText) { newValue in
+        .onChange(of: searchText) { oldValue, newValue in
             if(newValue.isEmpty || searchText.isEmpty) {
                 vm.reset()
             } else {
