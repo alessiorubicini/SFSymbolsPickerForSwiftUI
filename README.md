@@ -81,16 +81,16 @@ With custom button:
 ## Installation
 
 Required:
-- iOS 15.0 or above
-- macOS 12.0 or above
-- Xcode 13.0 or above
+- iOS 17.0 or above
+- macOS 14.0 or above
+- Xcode 15.0 or above
 
 In Xcode go to `File -> Add Package Dependencies...` and paste in the repo's url: `https://github.com/alessiorubicini/SFSymbolsPicker`.
 Then choose the main branch or the version you desire.
 
 ## License
 
-Copyright 2024 (©) Alessio Rubicini.
+Copyright 2025 (©) Alessio Rubicini.
 
 The license for this repository is MIT License.
 
