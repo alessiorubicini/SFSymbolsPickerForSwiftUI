@@ -22,18 +22,20 @@
 
 ## Features
 
-- **Custom Close Button**: Specify a custom close button for the picker.
-- **macOS Support**: Compatible with macOS 11.0 and above.
-- **Optimized Performance**: Improved symbol loading performance for a smoother experience.
-- **Enhanced Search Bar**: Upgraded search bar for better usability.
-- **Bug Fixes**: Resolved visibility issues for the SymbolPicker view.
-- **Auto Dismiss**: Automatically dismiss the picker when a symbol is selected.
-- **Customizable UI**: Set a custom title for the view and a label for the search bar.
-- **Toolbar Icon**: Added a toolbar icon to manually dismiss the picker.
-- **Dynamic Symbol Loading**: Symbols are loaded at runtime directly from the system, ensuring access to the latest symbols as soon as devices are updated. Special thanks to [mackoj](https://github.com/mackoj) for contributing to the dynamic symbol loading implementation.
+- **Easy Integration**: Simple SwiftUI binding for seamless symbol selection
+- **Cross-Platform**: Full support for both iOS and macOS applications
+- **Dynamic Symbol Access**: Always up-to-date with the latest SF Symbols from the system
+- **Customizable Interface**: 
+  - Custom title and search bar label
+  - Optional custom close button
+  - Configurable auto-dismiss behavior
+- **Intuitive Search**: Powerful search functionality to quickly find the perfect symbol
+- **System Integration**: Native toolbar icon support for easy dismissal
+- **Modern Design**: Clean and consistent with Apple's design language
+- **Performance Optimized**: Efficient symbol loading and rendering
 
 ## Preview
-![SF Symbols Picker](./Resources/SFSymbolsPickerPreview.png)
+![SF Symbols Picker](./Resources/preview.png)
 
 ## Usage
 
