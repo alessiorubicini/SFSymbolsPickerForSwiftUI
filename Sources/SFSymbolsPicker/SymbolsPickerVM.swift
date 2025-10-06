@@ -10,8 +10,8 @@ import SwiftUI
 
 public class SymbolsPickerViewModel: ObservableObject {
     
-    let title: String
-    let searchbarLabel: String
+    let title: Text
+    let searchbarLabel: Text
     let autoDismiss: Bool
     private let symbolLoader: SymbolLoader = SymbolLoader()
     private var searchTask: Task<Void, Never>?
@@ -21,7 +21,7 @@ public class SymbolsPickerViewModel: ObservableObject {
     @Published var isLoadingMore: Bool = false
     private var isSearching: Bool = false
 
-    init(title: String, searchbarLabel: String, autoDismiss: Bool) {
+    init(title: Text, searchbarLabel: Text, autoDismiss: Bool) {
         self.title = title
         self.searchbarLabel = searchbarLabel
         self.autoDismiss = autoDismiss
