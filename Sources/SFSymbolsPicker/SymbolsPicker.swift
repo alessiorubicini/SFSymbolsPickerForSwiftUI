@@ -196,7 +196,7 @@ extension SymbolsPicker {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
             title: Text(title),
-            searchbarLabel: Text("Search..."),
+            searchbarLabel: Text(searchLabel),
             autoDismiss: autoDismiss
         )
         self.closeButtonView = closeButton()
