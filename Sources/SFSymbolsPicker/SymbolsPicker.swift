@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Alessio Rubicini on 22/10/23.
 //
@@ -14,7 +14,7 @@ public struct SymbolsPicker<Content: View>: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var searchText = ""
     let closeButtonView: Content
-    
+
     /// Initialize the SymbolsPicker view
     /// - Parameters:
     ///   - selection: binding to the selected icon name.
@@ -22,14 +22,22 @@ public struct SymbolsPicker<Content: View>: View {
     ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
     ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
-    
-    public init(selection: Binding<String>, title: String, searchLabel: String = "Search...", autoDismiss: Bool = false, @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }) {
+    public init(
+        selection: Binding<String>,
+        title: Text,
+        searchLabel: Text,
+        autoDismiss: Bool = false,
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
         self._selection = selection
-        self.vm = SymbolsPickerViewModel(title: title, searchbarLabel: searchLabel, autoDismiss: autoDismiss)
+        self.vm = SymbolsPickerViewModel(
+            title: title,
+            searchbarLabel: searchLabel,
+            autoDismiss: autoDismiss
+        )
         self.closeButtonView = closeButton()
     }
-    
-    @ViewBuilder
+
     public var body: some View {
         NavigationStack {
             VStack {
@@ -40,9 +48,14 @@ public struct SymbolsPicker<Content: View>: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else if vm.symbols.isEmpty && !searchText.isEmpty {
                         ContentUnavailableView {
-                            Label("No Symbols Found", systemImage: "magnifyingglass")
+                            Label {
+                                Text("No Symbols Found", bundle: .module)
+                            } icon: {
+                                Image(systemName: "magnifyingglass")
+                            }
+
                         } description: {
-                            Text("Try searching for something else")
+                            Text("Try searching for something else", bundle: .module)
                         }
                     } else {
                         ScrollView(.vertical) {
@@ -91,7 +104,7 @@ public struct SymbolsPicker<Content: View>: View {
                 .navigationBarTitleDisplayMode(.inline)
                 #endif
                 .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
+                    ToolbarItem(placement: .cancellationAction) {
                         Button {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
@@ -102,22 +115,92 @@ public struct SymbolsPicker<Content: View>: View {
             }
             .searchable(text: $searchText, prompt: vm.searchbarLabel)
         }
-        
         .onChange(of: selection) { oldValue, newValue in
-            if(vm.autoDismiss) {
+            if vm.autoDismiss {
                 presentationMode.wrappedValue.dismiss()
             }
         }
-        
         .onChange(of: searchText) { oldValue, newValue in
-            if(newValue.isEmpty || searchText.isEmpty) {
+            if newValue.isEmpty || searchText.isEmpty {
                 vm.reset()
             } else {
                 vm.searchSymbols(with: newValue)
             }
         }
     }
+}
 
+extension SymbolsPicker {
+    /// Initialize the SymbolsPicker view
+    /// - Parameters:
+    ///   - selection: binding to the selected icon name.
+    ///   - titleKey: navigation title for the view.
+    ///   - searchLabel: label for the search bar.
+    ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
+
+    public init(
+        selection: Binding<String>,
+        titleKey: LocalizedStringKey,
+        searchLabel: LocalizedStringKey,
+        bundle: Bundle = #bundle,
+        autoDismiss: Bool = false,
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self._selection = selection
+        self.vm = SymbolsPickerViewModel(
+            title: Text(titleKey, bundle: bundle),
+            searchbarLabel: Text(searchLabel, bundle: bundle),
+            autoDismiss: autoDismiss
+        )
+        self.closeButtonView = closeButton()
+    }
+
+    /// Initialize the SymbolsPicker view
+    /// - Parameters:
+    ///   - selection: binding to the selected icon name.
+    ///   - titleKey: navigation title for the view.
+    ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
+
+    public init(
+        selection: Binding<String>,
+        titleKey: LocalizedStringKey,
+        bundle: Bundle = #bundle,
+        autoDismiss: Bool = false,
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self._selection = selection
+        self.vm = SymbolsPickerViewModel(
+            title: Text(titleKey, bundle: bundle),
+            searchbarLabel: Text("Search...", bundle: .module),
+            autoDismiss: autoDismiss
+        )
+        self.closeButtonView = closeButton()
+    }
+
+    /// Initialize the SymbolsPicker view
+    /// - Parameters:
+    ///   - selection: binding to the selected icon name.
+    ///   - title: navigation title for the view.
+    ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
+    ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
+    public init(
+        selection: Binding<String>,
+        title: String,
+        searchLabel: String = "Search...",
+        autoDismiss: Bool = false,
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self._selection = selection
+        self.vm = SymbolsPickerViewModel(
+            title: Text(title),
+            searchbarLabel: Text(searchLabel),
+            autoDismiss: autoDismiss
+        )
+        self.closeButtonView = closeButton()
+    }
 }
 
 #Preview {

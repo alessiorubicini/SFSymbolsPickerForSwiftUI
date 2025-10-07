@@ -39,7 +39,7 @@ struct ContentView: View {
                 } label: {
                     HStack {
                         Image(systemName: "square.grid.2x2")
-                        Text("Choose Symbol")
+                        Text(verbatim: "Choose Symbol")
                     }
                     .font(.headline)
                     .foregroundColor(.white)
