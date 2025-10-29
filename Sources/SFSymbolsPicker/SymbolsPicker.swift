@@ -96,7 +96,9 @@ public struct SymbolsPicker<Content: View>: View {
                             DragGesture(minimumDistance: 10)
                                 .onChanged { _ in }
                         )
+                        #if !os(visionOS)
                         .scrollDismissesKeyboard(.immediately)
+                        #endif
                     }
                 }
                 .navigationTitle(vm.title)
