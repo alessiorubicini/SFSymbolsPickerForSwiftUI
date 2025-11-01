@@ -65,9 +65,9 @@ public struct SymbolsPicker<Content: View>: View {
                         ScrollView(.vertical) {
                             LazyVGrid(
                                 columns: [
-                                    GridItem(.adaptive(minimum: 60, maximum: 80), spacing: 16)
+                                    GridItem(.adaptive(minimum: 60, maximum: 80), spacing: 8)
                                 ],
-                                spacing: 16
+                                spacing: 8
                             ) {
                                 ForEach(vm.symbols, id: \.hash) { icon in
                                     Button {
@@ -92,7 +92,7 @@ public struct SymbolsPicker<Content: View>: View {
                                     }
                                 }
                             }
-                            .padding(.horizontal)
+                            .padding(8)
                         }
                         .scrollIndicators(.hidden)
                         .scrollDisabled(false)
@@ -100,7 +100,9 @@ public struct SymbolsPicker<Content: View>: View {
                             DragGesture(minimumDistance: 10)
                                 .onChanged { _ in }
                         )
+                        #if !os(visionOS)
                         .scrollDismissesKeyboard(.immediately)
+                        #endif
                     }
                 }
                 .navigationTitle(vm.title)
