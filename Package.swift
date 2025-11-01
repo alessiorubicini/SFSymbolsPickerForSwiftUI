@@ -13,7 +13,10 @@ let package = Package(
             targets: ["SFSymbolsPicker"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0"))
+    ],
     targets: [
-        .target(name: "SFSymbolsPicker"),
+        .target(name: "SFSymbolsPicker", dependencies: ["SFSafeSymbols"])
     ]
 )

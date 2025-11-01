@@ -1,16 +1,18 @@
 //
-//  SwiftUIView.swift
-//  
+//  CustomSymbolsExample.swift
+//  SFSymbolsPicker
 //
-//  Created by Alessio Rubicini on 06/01/21.
+//  Created by Alessio Rubicini on 01/11/25.
 //
 
 import Foundation
 import SwiftUI
 
-struct ContentView: View {
+/// Example view demonstrating the usage of SymbolsPicker with a custom set of symbols.
+struct CustomSymbolsExample: View {
+    
     @State private var isSheetPresented = false
-    @State private var icon = "star.fill"
+    @State private var icon = "figure.walk"
     @State private var iconSize: CGFloat = 50
     
     var body: some View {
@@ -57,7 +59,8 @@ struct ContentView: View {
                     selection: $icon,
                     title: "Choose your symbol",
                     searchLabel: "Search symbols...",
-                    autoDismiss: true
+                    autoDismiss: true,
+                    symbols: [.figureWalk, .figureWalkCircle, .figureWalkCircleFill, .figureWave, .figureWaveCircle, .figureWaveCircleFill]
                 ) {
                     Image(systemName: "xmark.circle")
                         .foregroundColor(.accentColor)
@@ -68,5 +71,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    CustomSymbolsExample()
 }

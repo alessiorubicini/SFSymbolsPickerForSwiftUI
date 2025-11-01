@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SFSafeSymbols
 
 public struct SymbolsPicker<Content: View>: View {
     
@@ -21,19 +22,22 @@ public struct SymbolsPicker<Content: View>: View {
     ///   - title: navigation title for the view.
     ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - symbols: an array of SFSymbols to display. If empty, all symbols will be shown.
     ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
     public init(
         selection: Binding<String>,
         title: Text,
         searchLabel: Text,
         autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
             title: title,
             searchbarLabel: searchLabel,
-            autoDismiss: autoDismiss
+            autoDismiss: autoDismiss,
+            symbols: symbols
         )
         self.closeButtonView = closeButton()
     }
@@ -137,6 +141,7 @@ extension SymbolsPicker {
     ///   - titleKey: navigation title for the view.
     ///   - searchLabel: label for the search bar.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - symbols: an array of SFSymbols to display. If empty, all symbols will be shown.
     ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
 
     public init(
@@ -145,13 +150,15 @@ extension SymbolsPicker {
         searchLabel: LocalizedStringKey,
         bundle: Bundle = #bundle,
         autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
             title: Text(titleKey, bundle: bundle),
             searchbarLabel: Text(searchLabel, bundle: bundle),
-            autoDismiss: autoDismiss
+            autoDismiss: autoDismiss,
+            symbols: symbols
         )
         self.closeButtonView = closeButton()
     }
@@ -161,6 +168,7 @@ extension SymbolsPicker {
     ///   - selection: binding to the selected icon name.
     ///   - titleKey: navigation title for the view.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - symbols: an array of SFSymbols to display. If empty, all symbols will be shown.
     ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
 
     public init(
@@ -168,13 +176,15 @@ extension SymbolsPicker {
         titleKey: LocalizedStringKey,
         bundle: Bundle = #bundle,
         autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
             title: Text(titleKey, bundle: bundle),
             searchbarLabel: Text("Search...", bundle: .module),
-            autoDismiss: autoDismiss
+            autoDismiss: autoDismiss,
+            symbols: symbols
         )
         self.closeButtonView = closeButton()
     }
@@ -185,19 +195,22 @@ extension SymbolsPicker {
     ///   - title: navigation title for the view.
     ///   - searchLabel: label for the search bar. Set to 'Search...' by default.
     ///   - autoDismiss: if true the view automatically dismisses itself when the symbols is selected.
+    ///   - symbols: an array of SFSymbols to display. If empty, all symbols will be shown.
     ///   - closeButton: a custom view for the picker close button. Set to 'Image(systemName: "xmark.circle")' by default.
     public init(
         selection: Binding<String>,
         title: String,
         searchLabel: String = "Search...",
         autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
             title: Text(title),
             searchbarLabel: Text(searchLabel),
-            autoDismiss: autoDismiss
+            autoDismiss: autoDismiss,
+            symbols: symbols
         )
         self.closeButtonView = closeButton()
     }

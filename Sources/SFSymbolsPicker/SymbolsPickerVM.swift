@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SFSafeSymbols
 
 public class SymbolsPickerViewModel: ObservableObject {
     
@@ -15,20 +16,34 @@ public class SymbolsPickerViewModel: ObservableObject {
     let autoDismiss: Bool
     private let symbolLoader: SymbolLoader = SymbolLoader()
     private var searchTask: Task<Void, Never>?
+    private let customSymbols: [String]
+    private let useCustomSymbols: Bool
 
     @Published var symbols: [String] = []
     @Published var isLoading: Bool = true
     @Published var isLoadingMore: Bool = false
     private var isSearching: Bool = false
 
-    init(title: Text, searchbarLabel: Text, autoDismiss: Bool) {
+    init(title: Text, searchbarLabel: Text, autoDismiss: Bool, symbols: [SFSymbol] = []) {
         self.title = title
         self.searchbarLabel = searchbarLabel
         self.autoDismiss = autoDismiss
-
-        NotificationCenter.default.addObserver(self, selector: #selector(updateSymbols), name: .symbolsLoaded, object: nil)
-
-        self.loadSymbols()
+        
+        // Convert SFSymbol array to string array if provided
+        if !symbols.isEmpty {
+            self.customSymbols = symbols.map { $0.rawValue }
+            self.useCustomSymbols = true
+            // Set symbols directly without loading
+            DispatchQueue.main.async {
+                self.symbols = self.customSymbols
+                self.isLoading = false
+            }
+        } else {
+            self.customSymbols = []
+            self.useCustomSymbols = false
+            NotificationCenter.default.addObserver(self, selector: #selector(updateSymbols), name: .symbolsLoaded, object: nil)
+            self.loadSymbols()
+        }
     }
 
     @objc private func updateSymbols() {
@@ -39,6 +54,7 @@ public class SymbolsPickerViewModel: ObservableObject {
     }
 
     public var hasMoreSymbols: Bool {
+        guard !useCustomSymbols else { return false }
         return !isSearching && symbolLoader.hasMoreSymbols()
     }
 
@@ -50,7 +66,7 @@ public class SymbolsPickerViewModel: ObservableObject {
     }
 
     public func loadMoreSymbols() {
-        guard !isLoadingMore && hasMoreSymbols else { return }
+        guard !useCustomSymbols && !isLoadingMore && hasMoreSymbols else { return }
         isLoadingMore = true
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -77,19 +93,35 @@ public class SymbolsPickerViewModel: ObservableObject {
             
             isSearching = true
             DispatchQueue.main.async {
-                self.symbols = self.symbolLoader.getSymbols(named: name)
+                if self.useCustomSymbols {
+                    // Filter custom symbols by name
+                    let filtered = self.customSymbols.filter { symbol in
+                        symbol.lowercased().contains(name.lowercased())
+                    }
+                    self.symbols = filtered
+                } else {
+                    self.symbols = self.symbolLoader.getSymbols(named: name)
+                }
                 self.isLoading = false
             }
         }
     }
 
     public func reset() {
-        symbolLoader.resetPagination()
-        symbols.removeAll()
-        isLoading = true
-        isSearching = false
-        isLoadingMore = false
-        searchTask?.cancel()
-        loadSymbols()
+        if useCustomSymbols {
+            // Reset to custom symbols
+            symbols = customSymbols
+            isSearching = false
+            isLoading = false
+            searchTask?.cancel()
+        } else {
+            symbolLoader.resetPagination()
+            symbols.removeAll()
+            isLoading = true
+            isSearching = false
+            isLoadingMore = false
+            searchTask?.cancel()
+            loadSymbols()
+        }
     }
 }
