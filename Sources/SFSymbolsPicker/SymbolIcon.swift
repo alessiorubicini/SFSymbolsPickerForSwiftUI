@@ -11,6 +11,7 @@ struct SymbolIcon: View {
     
     let symbolName: String
     @Binding var selection: String
+    @Environment(\.symbolsPickerColors) var colorConfig
     
     private let size: CGFloat = 44
     private let cornerRadius: CGFloat = 8
@@ -28,14 +29,15 @@ struct SymbolIcon: View {
                 .background(
                     RoundedRectangle(cornerRadius: cornerRadius)
                         .fill(selection == symbolName ? 
-                            Color.accentColor.opacity(0.15) : 
-                            Color.clear)
+                            colorConfig.selectedBackgroundColor : 
+                            colorConfig.unselectedBackgroundColor)
                 )
-                .foregroundColor(selection == symbolName ? 
-                    .accentColor : 
-                    .primary)
+                .foregroundStyle(selection == symbolName ? 
+                    colorConfig.selectedIconColor : 
+                    colorConfig.unselectedIconColor)
                 .scaleEffect(isPressed ? 0.95 : 1.0)
                 .animation(.easeInOut(duration: 0.1), value: isPressed)
+                .accessibilityLabel(Text(symbolName.replacingOccurrences(of: ".", with: " ")))
         }
         .buttonStyle(SymbolButtonStyle(isPressed: $isPressed))
         .contentShape(Rectangle())

@@ -30,21 +30,20 @@ private extension String {
 }
 
 // This class is responsible for loading symbols from system
+@MainActor
 public class SymbolLoader {
     private let symbolsPerPage = 100
     private var currentPage = 0
     private final var allSymbols: [String] = []
-    private var retryCount = 0  // Prevent infinite retries
     private var loadedSymbols: [String] = []
 
-    public init() {
-        // Load symbols asynchronously
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.loadAllSymbols()
-        }
-    }
+    public init() {}
 
-    public func getSymbols() -> [String] {
+    public func getSymbols() async -> [String] {
+        if allSymbols.isEmpty {
+            await loadAllSymbols()
+        }
+        
         if currentPage == 0 {
             currentPage = 1
             let endIndex = min(symbolsPerPage, allSymbols.count)
@@ -63,8 +62,11 @@ public class SymbolLoader {
         return newSymbols
     }
 
-    public func getSymbols(named name: String) -> [String] {
+    public func getSymbols(named name: String) async -> [String] {
         if name.isEmpty { return [] }
+        if allSymbols.isEmpty {
+            await loadAllSymbols()
+        }
         
         // First try exact matches
         let exactMatches = allSymbols.filter { $0.lowercased().starts(with: name.lowercased()) }
@@ -86,35 +88,29 @@ public class SymbolLoader {
         loadedSymbols.removeAll()
     }
 
-    private func loadAllSymbols() {
-        guard let bundle = Bundle(identifier: "com.apple.CoreGlyphs") else {
-            print("Failed: Bundle 'com.apple.CoreGlyphs' not found. Retrying...")
-            if retryCount < 3 {  // Prevent infinite retries
-                retryCount += 1
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.loadAllSymbols() // Retry loading
+    private func loadAllSymbols() async {
+        guard allSymbols.isEmpty else { return }
+        
+        let loaded: [String]? = await Task.detached {
+            var retryCount = 0
+            while retryCount < 3 {
+                if let bundle = Bundle(identifier: "com.apple.CoreGlyphs"),
+                   let resourcePath = bundle.path(forResource: "name_availability", ofType: "plist"),
+                   let plist = NSDictionary(contentsOfFile: resourcePath),
+                   let plistSymbols = plist["symbols"] as? [String: String] {
+                    return Array(plistSymbols.keys).sorted(by: { $1 > $0 })
                 }
+                
+                print("Failed: Bundle 'com.apple.CoreGlyphs' not found. Retrying...")
+                retryCount += 1
+                try? await Task.sleep(nanoseconds: 100_000_000)
             }
-            return
-        }
-
-        guard let resourcePath = bundle.path(forResource: "name_availability", ofType: "plist"),
-              let plist = NSDictionary(contentsOfFile: resourcePath),
-              let plistSymbols = plist["symbols"] as? [String: String] else {
-            return
-        }
-
-        print("Successfully loaded \(plistSymbols.count) SF Symbols.")
-        allSymbols = Array(plistSymbols.keys).sorted(by: { $1 > $0 })
-        loadedSymbols = Array(allSymbols.prefix(symbolsPerPage))
-
-        // Notify ViewModel to update UI on the main queue
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .symbolsLoaded, object: nil)
+            return nil
+        }.value
+        
+        if let loaded {
+            print("Successfully loaded \(loaded.count) SF Symbols.")
+            self.allSymbols = loaded
         }
     }
-}
-
-extension Notification.Name {
-    static let symbolsLoaded = Notification.Name("symbolsLoaded")
 }

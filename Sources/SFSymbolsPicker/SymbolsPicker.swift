@@ -11,8 +11,9 @@ import SFSafeSymbols
 public struct SymbolsPicker<Content: View>: View {
     
     @Binding var selection: String
-    @ObservedObject var vm: SymbolsPickerViewModel
+    @State var vm: SymbolsPickerViewModel
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.symbolsPickerGrid) var gridConfig
     @State private var searchText = ""
     let closeButtonView: Content
 
@@ -33,12 +34,12 @@ public struct SymbolsPicker<Content: View>: View {
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
-        self.vm = SymbolsPickerViewModel(
+        self._vm = State(initialValue: SymbolsPickerViewModel(
             title: title,
             searchbarLabel: searchLabel,
             autoDismiss: autoDismiss,
             symbols: symbols
-        )
+        ))
         self.closeButtonView = closeButton()
     }
 
@@ -65,18 +66,12 @@ public struct SymbolsPicker<Content: View>: View {
                         ScrollView(.vertical) {
                             LazyVGrid(
                                 columns: [
-                                    GridItem(.adaptive(minimum: 60, maximum: 80), spacing: 8)
+                                    GridItem(.adaptive(minimum: gridConfig.minimumSize, maximum: gridConfig.maximumSize), spacing: gridConfig.spacing)
                                 ],
-                                spacing: 8
+                                spacing: gridConfig.spacing
                             ) {
-                                ForEach(vm.symbols, id: \.hash) { icon in
-                                    Button {
-                                        withAnimation {
-                                            self.selection = icon
-                                        }
-                                    } label: {
-                                        SymbolIcon(symbolName: icon, selection: $selection)
-                                    }
+                                ForEach(vm.symbols, id: \.self) { icon in
+                                    SymbolIcon(symbolName: icon, selection: $selection)
                                 }
                                 
                                 if vm.hasMoreSymbols && searchText.isEmpty {
@@ -127,7 +122,7 @@ public struct SymbolsPicker<Content: View>: View {
             }
         }
         .onChange(of: searchText) { oldValue, newValue in
-            if newValue.isEmpty || searchText.isEmpty {
+            if newValue.isEmpty {
                 vm.reset()
             } else {
                 vm.searchSymbols(with: newValue)
@@ -157,12 +152,12 @@ extension SymbolsPicker {
     ) {
         self._selection = selection
         let resolvedBundle = bundle ?? .module
-        self.vm = SymbolsPickerViewModel(
+        self._vm = State(initialValue: SymbolsPickerViewModel(
             title: Text(titleKey, bundle: resolvedBundle),
             searchbarLabel: Text(searchLabel, bundle: resolvedBundle),
             autoDismiss: autoDismiss,
             symbols: symbols
-        )
+        ))
         self.closeButtonView = closeButton()
     }
 
@@ -183,12 +178,12 @@ extension SymbolsPicker {
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
-        self.vm = SymbolsPickerViewModel(
+        self._vm = State(initialValue: SymbolsPickerViewModel(
             title: Text(titleKey, bundle: bundle ?? .module),
             searchbarLabel: Text("Search...", bundle: .module),
             autoDismiss: autoDismiss,
             symbols: symbols
-        )
+        ))
         self.closeButtonView = closeButton()
     }
 
@@ -209,13 +204,128 @@ extension SymbolsPicker {
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
-        self.vm = SymbolsPickerViewModel(
+        self._vm = State(initialValue: SymbolsPickerViewModel(
             title: Text(title),
             searchbarLabel: Text(searchLabel),
             autoDismiss: autoDismiss,
             symbols: symbols
-        )
+        ))
         self.closeButtonView = closeButton()
+    }
+}
+
+extension Binding where Value == String {
+    init(sfSymbolBinding: Binding<SFSymbol>) {
+        self.init(
+            get: { sfSymbolBinding.wrappedValue.rawValue },
+            set: { newValue in
+                sfSymbolBinding.wrappedValue = SFSymbol(rawValue: newValue)
+            }
+        )
+    }
+    
+    init(sfSymbolBinding: Binding<SFSymbol?>) {
+        self.init(
+            get: { sfSymbolBinding.wrappedValue?.rawValue ?? "" },
+            set: { newValue in
+                sfSymbolBinding.wrappedValue = SFSymbol(rawValue: newValue)
+            }
+        )
+    }
+}
+
+extension SymbolsPicker {
+    
+    // MARK: - SFSymbol Bindings
+
+    public init(
+        selection: Binding<SFSymbol>,
+        title: Text,
+        searchLabel: Text,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), title: title, searchLabel: searchLabel, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol?>,
+        title: Text,
+        searchLabel: Text,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), title: title, searchLabel: searchLabel, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol>,
+        titleKey: LocalizedStringKey,
+        searchLabel: LocalizedStringKey,
+        bundle: Bundle? = nil,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), titleKey: titleKey, searchLabel: searchLabel, bundle: bundle, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol?>,
+        titleKey: LocalizedStringKey,
+        searchLabel: LocalizedStringKey,
+        bundle: Bundle? = nil,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), titleKey: titleKey, searchLabel: searchLabel, bundle: bundle, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol>,
+        titleKey: LocalizedStringKey,
+        bundle: Bundle? = nil,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), titleKey: titleKey, bundle: bundle, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol?>,
+        titleKey: LocalizedStringKey,
+        bundle: Bundle? = nil,
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), titleKey: titleKey, bundle: bundle, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol>,
+        title: String,
+        searchLabel: String = "Search...",
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), title: title, searchLabel: searchLabel, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
+    }
+
+    public init(
+        selection: Binding<SFSymbol?>,
+        title: String,
+        searchLabel: String = "Search...",
+        autoDismiss: Bool = false,
+        symbols: [SFSymbol] = [],
+        @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
+    ) {
+        self.init(selection: Binding(sfSymbolBinding: selection), title: title, searchLabel: searchLabel, autoDismiss: autoDismiss, symbols: symbols, closeButton: closeButton)
     }
 }
 

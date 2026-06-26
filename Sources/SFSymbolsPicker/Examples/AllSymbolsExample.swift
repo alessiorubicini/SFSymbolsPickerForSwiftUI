@@ -59,7 +59,7 @@ struct AllSymbolsExample: View {
                     searchLabel: "Search symbols...",
                     autoDismiss: true
                 ) {
-                    Image(systemName: "xmark.circle")
+                    Image(systemName: "xmark")
                         .foregroundColor(.accentColor)
                 }
             }

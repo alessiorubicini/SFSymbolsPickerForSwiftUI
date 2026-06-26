@@ -21,6 +21,10 @@ let package = Package(
             name: "SFSymbolsPicker",
             dependencies: ["SFSafeSymbols"],
             resources: [.process("Localizable.xcstrings")]
+        ),
+        .testTarget(
+            name: "SFSymbolsPickerTests",
+            dependencies: ["SFSymbolsPicker"]
         )
     ]
 )
