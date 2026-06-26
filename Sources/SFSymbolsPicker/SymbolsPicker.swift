@@ -150,15 +150,16 @@ extension SymbolsPicker {
         selection: Binding<String>,
         titleKey: LocalizedStringKey,
         searchLabel: LocalizedStringKey,
-        bundle: Bundle = #bundle,
+        bundle: Bundle? = nil,
         autoDismiss: Bool = false,
         symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
+        let resolvedBundle = bundle ?? .module
         self.vm = SymbolsPickerViewModel(
-            title: Text(titleKey, bundle: bundle),
-            searchbarLabel: Text(searchLabel, bundle: bundle),
+            title: Text(titleKey, bundle: resolvedBundle),
+            searchbarLabel: Text(searchLabel, bundle: resolvedBundle),
             autoDismiss: autoDismiss,
             symbols: symbols
         )
@@ -176,14 +177,14 @@ extension SymbolsPicker {
     public init(
         selection: Binding<String>,
         titleKey: LocalizedStringKey,
-        bundle: Bundle = #bundle,
+        bundle: Bundle? = nil,
         autoDismiss: Bool = false,
         symbols: [SFSymbol] = [],
         @ViewBuilder closeButton: () -> Content = { Image(systemName: "xmark.circle") }
     ) {
         self._selection = selection
         self.vm = SymbolsPickerViewModel(
-            title: Text(titleKey, bundle: bundle),
+            title: Text(titleKey, bundle: bundle ?? .module),
             searchbarLabel: Text("Search...", bundle: .module),
             autoDismiss: autoDismiss,
             symbols: symbols

@@ -17,6 +17,10 @@ let package = Package(
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0"))
     ],
     targets: [
-        .target(name: "SFSymbolsPicker", dependencies: ["SFSafeSymbols"])
+        .target(
+            name: "SFSymbolsPicker",
+            dependencies: ["SFSafeSymbols"],
+            resources: [.process("Localizable.xcstrings")]
+        )
     ]
 )
