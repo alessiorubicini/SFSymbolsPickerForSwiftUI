@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="128" height="128" src="Resources/icon.png" alt="SFSymbolsPicker Logo">
+  <img width="230" height="230" src="Resources/icon.png" alt="SFSymbolsPicker Logo">
   <h1>SF Symbols Picker for SwiftUI</h1>
   <p>A simple, highly customizable SwiftUI component for picking Apple's SF Symbols in iOS and macOS applications.</p>
 
